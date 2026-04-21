@@ -6,7 +6,7 @@
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  background-color: var(--background);
+  background-color: #0a0a0a; /* Fundo base sólido */
 }
 
 :root {
@@ -32,7 +32,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: var(--background);
+  background-color: transparent; /* Removido fundo sólido do body */
   color: var(--foreground);
   font-family: var(--font-main);
   scroll-behavior: smooth;
@@ -74,7 +74,7 @@ ul {
 }
 
 .header.scrolled {
-  background-color: rgba(10, 10, 10, 0.95);
+  background-color: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(10px);
   padding: 1rem 0;
   border-bottom: 1px solid var(--accent-light);
@@ -135,7 +135,7 @@ ul {
   position: relative;
   height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background: transparent; /* Tornar transparente para ver o canvas */
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -147,7 +147,7 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
   pointer-events: none;
 }
 
@@ -198,7 +198,8 @@ ul {
 }
 
 .program-badge {
-  background: var(--accent);
+  background: rgba(34, 34, 34, 0.6);
+  backdrop-filter: blur(5px);
   padding: 0.75rem 1.25rem;
   border-radius: 8px;
   border-left: 4px solid var(--primary);
@@ -326,7 +327,7 @@ ul {
 /* About Section */
 .about {
   padding: 100px 0;
-  background-color: var(--background);
+  background-color: transparent; /* Tornar transparente */
   position: relative;
   overflow: hidden;
 }
@@ -344,7 +345,8 @@ ul {
 
 .image-placeholder {
   aspect-ratio: 1/1.2;
-  background-color: var(--accent);
+  background-color: rgba(34, 34, 34, 0.5);
+  backdrop-filter: blur(5px);
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -447,14 +449,15 @@ ul {
   font-style: italic;
   font-size: 1.25rem;
   color: white;
-  background-color: var(--accent);
+  background-color: rgba(34, 34, 34, 0.6);
+  backdrop-filter: blur(5px);
   border-radius: 0 10px 10px 0;
 }
 
 /* Programs Section */
 .programs {
   padding: 100px 0;
-  background-color: #0f0f0f;
+  background-color: transparent; /* Tornar transparente */
 }
 
 .section-header {
@@ -476,7 +479,8 @@ ul {
 }
 
 .program-card {
-  background-color: var(--accent);
+  background-color: rgba(34, 34, 34, 0.6);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2.5rem;
   border: 1px solid var(--accent-light);
@@ -500,7 +504,7 @@ ul {
 .program-card:hover {
   transform: translateY(-10px);
   border-color: var(--accent-color);
-  background-color: #2a2a2a;
+  background-color: rgba(42, 42, 42, 0.8);
 }
 
 .card-icon {
@@ -561,14 +565,14 @@ ul {
 /* Advertise Section */
 .advertise {
   padding: 100px 0;
-  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80');
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
 }
 
 .info-box {
-  background-color: rgba(34, 34, 34, 0.9);
+  background-color: rgba(34, 34, 34, 0.85);
   backdrop-filter: blur(10px);
   padding: 4rem;
   border-radius: 30px;
@@ -651,6 +655,7 @@ ul {
 /* Contact Section */
 .contact {
   padding: 100px 0;
+  background-color: transparent; /* Tornar transparente */
 }
 
 .contact-grid {
@@ -660,7 +665,8 @@ ul {
 }
 
 .info-card {
-  background-color: var(--accent);
+  background-color: rgba(34, 34, 34, 0.6);
+  backdrop-filter: blur(10px);
   padding: 3rem;
   border-radius: 20px;
   height: 100%;
@@ -735,7 +741,7 @@ ul {
 .form-group input,
 .form-group textarea {
   width: 100%;
-  background-color: var(--accent);
+  background-color: rgba(34, 34, 34, 0.6);
   border: 1px solid var(--accent-light);
   border-radius: 8px;
   padding: 1rem;
@@ -765,7 +771,8 @@ ul {
 /* Footer */
 .footer {
   padding: 80px 0 140px;
-  background-color: #050505;
+  background-color: rgba(5, 5, 5, 0.9);
+  backdrop-filter: blur(10px);
   border-top: 1px solid var(--accent-light);
 }
 

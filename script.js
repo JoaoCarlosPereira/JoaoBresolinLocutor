@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Footer Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // 4. Contact Form Handling (Prevent default and show alert)
+    // 4. Contact Form Handling
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -79,120 +79,118 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // 6. Canvas Background Animation
+    // 6. Canvas Sound Waves Animation
     const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let pulses = [];
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let waves = [];
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-        constructor() {
-            this.reset();
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initWaves();
         }
 
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 2 + 1;
-            this.color = Math.random() > 0.5 ? '#ff4d4d' : '#ff8c00';
-            this.opacity = Math.random() * 0.5 + 0.1;
-        }
+        window.addEventListener('resize', resize);
 
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.globalAlpha = this.opacity;
-            ctx.fill();
-        }
-    }
-
-    class Pulse {
-        constructor(x, y) {
-            this.x = x || Math.random() * canvas.width;
-            this.y = y || Math.random() * canvas.height;
-            this.radius = 0;
-            this.maxRadius = Math.random() * 300 + 100;
-            this.opacity = 0.3;
-            this.speed = Math.random() * 2 + 1;
-        }
-
-        update() {
-            this.radius += this.speed;
-            this.opacity -= 0.002;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.strokeStyle = '#ff4d4d';
-            ctx.globalAlpha = Math.max(0, this.opacity);
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-    }
-
-    for (let i = 0; i < 60; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Update and draw particles
-        particles.forEach((p, index) => {
-            p.update();
-            p.draw();
-
-            // Connect nearby particles
-            for (let j = index + 1; j < particles.length; j++) {
-                const p2 = particles[j];
-                const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                if (dist < 150) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = p.color;
-                    ctx.globalAlpha = (1 - dist / 150) * 0.15;
-                    ctx.stroke();
+        function initWaves() {
+            waves = [
+                {
+                    amplitude: 50,
+                    period: 0.01,
+                    phase: 0,
+                    speed: 0.02,
+                    color: 'rgba(255, 77, 77, 0.15)',
+                    lineWidth: 2
+                },
+                {
+                    amplitude: 70,
+                    period: 0.005,
+                    phase: 0,
+                    speed: -0.015,
+                    color: 'rgba(255, 140, 0, 0.1)',
+                    lineWidth: 3
+                },
+                {
+                    amplitude: 30,
+                    period: 0.02,
+                    phase: 0,
+                    speed: 0.03,
+                    color: 'rgba(255, 77, 77, 0.1)',
+                    lineWidth: 1
                 }
-            }
-        });
-
-        // Occasional random pulse
-        if (Math.random() < 0.01 && pulses.length < 5) {
-            pulses.push(new Pulse());
+            ];
         }
 
-        // Update and draw pulses
-        pulses.forEach((pulse, index) => {
-            pulse.update();
-            pulse.draw();
-            if (pulse.opacity <= 0) {
-                pulses.splice(index, 1);
-            }
-        });
+        function drawWave(wave) {
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.strokeStyle = wave.color;
+            ctx.lineWidth = wave.lineWidth;
 
-        requestAnimationFrame(animate);
+            for (let x = 0; x < width; x++) {
+                // Combina múltiplas ondas senoidais para um efeito mais orgânico
+                const y = height / 2 + 
+                          Math.sin(x * wave.period + wave.phase) * wave.amplitude +
+                          Math.sin(x * 0.002 + wave.phase * 0.5) * (wave.amplitude * 0.5);
+                ctx.lineTo(x, y);
+            }
+
+            ctx.stroke();
+            wave.phase += wave.speed;
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Desenha várias camadas de ondas em posições diferentes
+            waves.forEach((wave, index) => {
+                // Desenha a mesma onda em alturas diferentes para preencher o fundo
+                const originalAmplitude = wave.amplitude;
+                
+                // Centro
+                drawWave(wave);
+                
+                // Topo
+                ctx.save();
+                ctx.translate(0, -height * 0.25);
+                wave.amplitude = originalAmplitude * 0.7;
+                drawWave(wave);
+                ctx.restore();
+                
+                // Base
+                ctx.save();
+                ctx.translate(0, height * 0.25);
+                wave.amplitude = originalAmplitude * 0.7;
+                drawWave(wave);
+                ctx.restore();
+
+                wave.amplitude = originalAmplitude;
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        animate();
     }
 
-    animate();
+    // Apply reveal to sections
+    document.querySelectorAll('section').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(30px)';
+        section.style.transition = 'all 0.8s ease-out';
+        observer.observe(section);
+    });
+
+    // Custom CSS for observer
+    const style = document.createElement('style');
+    style.textContent = `
+        .reveal {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    `;
+    document.head.appendChild(style);
 });
